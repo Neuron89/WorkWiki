@@ -1,4 +1,4 @@
-# Welcome to Your Wiki
+# Welcome to Nycoa Wiki
 
 This is the home page of your new wiki. You can edit this page by clicking the "Edit" button above.
 

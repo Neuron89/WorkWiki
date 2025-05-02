@@ -1,9 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash
 import os
 import markdown
-from werkzeug.security import generate_password_hash, check_password_hash
 import json
 from datetime import datetime
+import re
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.urandom(24)
@@ -15,21 +15,9 @@ def inject_now():
 
 # Data storage - in a real app, you'd use a database
 WIKI_CONTENT_DIR = 'content'
-USERS_FILE = 'users.json'
 
 # Ensure content directory exists
 os.makedirs(WIKI_CONTENT_DIR, exist_ok=True)
-
-# User management functions
-def load_users():
-    if os.path.exists(USERS_FILE):
-        with open(USERS_FILE, 'r') as f:
-            return json.load(f)
-    return {}
-
-def save_users(users):
-    with open(USERS_FILE, 'w') as f:
-        json.dump(users, f, indent=4)
 
 # Wiki content functions
 def get_page_path(title):
@@ -104,50 +92,6 @@ def search():
                 results.append(page_title)
     
     return render_template('search.html', query=query, results=results)
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        
-        users = load_users()
-        if username in users:
-            flash('Username already exists')
-            return redirect(url_for('register'))
-        
-        users[username] = {
-            'password_hash': generate_password_hash(password),
-            'created_at': datetime.now().isoformat()
-        }
-        save_users(users)
-        
-        flash('Registration successful, please log in')
-        return redirect(url_for('login'))
-    
-    return render_template('register.html')
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        
-        users = load_users()
-        if username in users and check_password_hash(users[username]['password_hash'], password):
-            session['username'] = username
-            flash('Login successful')
-            return redirect(url_for('index'))
-        
-        flash('Invalid username or password')
-    
-    return render_template('login.html')
-
-@app.route('/logout')
-def logout():
-    session.pop('username', None)
-    flash('You have been logged out')
-    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)

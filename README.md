@@ -1,4 +1,4 @@
-# Simple Wiki
+# Nycoa Wiki
 
 A lightweight wiki system built with Flask.
 
@@ -6,9 +6,9 @@ A lightweight wiki system built with Flask.
 
 - Create and edit wiki pages using Markdown
 - Search functionality
-- User registration and authentication
 - Clean, responsive design
 - Simple file-based storage (no database required)
+- Open access for everyone
 
 ## Installation
 
