@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Wiki{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <style>
+      /* Basic styling until we create a proper CSS file */
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        color: #333;
+      }
+      .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      header {
+        background-color: #f4f4f4;
+        padding: 1rem;
+        border-bottom: 1px solid #ddd;
+      }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      nav ul {
+        display: flex;
+        list-style: none;
+        padding: 0;
+      }
+      nav ul li {
+        margin-right: 15px;
+      }
+      a {
+        color: #0066cc;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .flash-messages {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+      }
+      .flash-messages.success {
+        background-color: #d4edda;
+        color: #155724;
+      }
+      .flash-messages.error {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+      .search-form {
+        margin-left: auto;
+      }
+      .search-form input {
+        padding: 5px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+      }
+      .search-form button {
+        padding: 5px 10px;
+        background-color: #0066cc;
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div>
+          <h1><a href="{{ url_for('index') }}">Wiki</a></h1>
+        </div>
+        <ul>
+          <li><a href="{{ url_for('index') }}">Home</a></li>
+          {% if session.get('username') %}
+          <li>Logged in as: {{ session.get('username') }}</li>
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+          {% else %}
+          <li><a href="{{ url_for('login') }}">Login</a></li>
+          <li><a href="{{ url_for('register') }}">Register</a></li>
+          {% endif %}
+        </ul>
+        <form class="search-form" action="{{ url_for('search') }}" method="get">
+          <input type="text" name="q" placeholder="Search..." />
+          <button type="submit">Search</button>
+        </form>
+      </nav>
+    </header>
+
+    <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+      messages %} {% for category, message in messages %}
+      <div class="flash-messages {{ category }}">{{ message }}</div>
+      {% endfor %} {% endif %} {% endwith %} {% block content %}{% endblock %}
+    </div>
+
+    <footer class="container">
+      <p>&copy; 2025 Wiki. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

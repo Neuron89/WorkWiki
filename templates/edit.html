@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit: {{ title }}{% endblock %}
+
+{% block content %}
+    <h1>Edit: {{ title }}</h1>
+    
+    <form method="post">
+        <div class="form-group">
+            <textarea name="content" id="content" rows="20" class="form-control">{{ content }}</textarea>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="button">Save</button>
+            <a href="{{ url_for('view_page', title=title) }}" class="button button-secondary">Cancel</a>
+        </div>
+    </form>
+
+    <div class="markdown-help">
+        <h3>Markdown Help</h3>
+        <table>
+            <tr>
+                <td><code># Heading 1</code></td>
+                <td>Creates a top-level heading</td>
+            </tr>
+            <tr>
+                <td><code>## Heading 2</code></td>
+                <td>Creates a second-level heading</td>
+            </tr>
+            <tr>
+                <td><code>**bold text**</code></td>
+                <td>Makes text <strong>bold</strong></td>
+            </tr>
+            <tr>
+                <td><code>*italic text*</code></td>
+                <td>Makes text <em>italic</em></td>
+            </tr>
+            <tr>
+                <td><code>[link text](URL)</code></td>
+                <td>Creates a hyperlink</td>
+            </tr>
+            <tr>
+                <td><code>![alt text](image-url)</code></td>
+                <td>Inserts an image</td>
+            </tr>
+            <tr>
+                <td><code>- item 1<br>- item 2</code></td>
+                <td>Creates a bulleted list</td>
+            </tr>
+            <tr>
+                <td><code>1. item 1<br>2. item 2</code></td>
+                <td>Creates a numbered list</td>
+            </tr>
+            <tr>
+                <td><code>```<br>code block<br>```</code></td>
+                <td>Creates a code block</td>
+            </tr>
+            <tr>
+                <td><code>[[Page Name]]</code></td>
+                <td>Creates a link to another wiki page</td>
+            </tr>
+        </table>
+    </div>
+{% endblock %}
